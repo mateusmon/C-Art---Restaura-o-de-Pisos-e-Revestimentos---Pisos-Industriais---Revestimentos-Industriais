@@ -70,7 +70,6 @@ if (wheel) {
   let target = 1;
   let active = -1;
   let frame = 0;
-  let dragY = null;
   let visible = true;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -140,19 +139,6 @@ if (wheel) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowRight') { event.preventDefault(); goTo(Math.round(target) + 1); }
     if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') { event.preventDefault(); goTo(Math.round(target) - 1); }
   });
-  wheel.addEventListener('pointerdown', (event) => {
-    if (event.target.closest('button')) return;
-    dragY = event.clientY;
-    wheel.setPointerCapture(event.pointerId);
-  });
-  wheel.addEventListener('pointermove', (event) => {
-    if (dragY === null) return;
-    goTo(target + (dragY - event.clientY) / 180);
-    dragY = event.clientY;
-  });
-  const settleDrag = () => { if (dragY === null) return; dragY = null; goTo(Math.round(target)); };
-  wheel.addEventListener('pointerup', settleDrag);
-  wheel.addEventListener('pointercancel', settleDrag);
 }
 
 const year = document.querySelector('#year');
